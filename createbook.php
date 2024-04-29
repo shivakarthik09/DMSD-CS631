@@ -13,7 +13,7 @@ if (!isset($_SESSION["admin_username"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - Books</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -23,15 +23,11 @@ if (!isset($_SESSION["admin_username"])) {
             margin: 0;
             padding: 0;
         }
-        .container {
-            padding: 20px;
-        }
         .header {
             background-color: #333;
             color: #fff;
             padding: 10px 20px;
             text-align: center;
-            margin-bottom: 20px;
         }
         .menu {
             background-color: #ddd;
@@ -63,16 +59,34 @@ if (!isset($_SESSION["admin_username"])) {
         .menu ul li a:hover {
             background-color: #ccc;
         }
-      
-        .logout-btn:hover {
-            background-color: #a93226;
-        }
-        .info-box {
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .sidebar {
+            background-color: #333;
+            color: #fff;
             padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 5px;
+            height: 100%;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+        .sidebar ul li a:hover {
+            color: #ccc;
+        }
+        .content {
             background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -85,6 +99,7 @@ if (!isset($_SESSION["admin_username"])) {
     <div class="container">
         <div class="menu">
             <ul>
+                <li><a href="home.php">Home</a></li>
                 <li><a href="book.php">Books</a></li>
                 <li><a href="student_dash.php">Readers</a></li>
                 <li><a href="#">Transactions</a></li>
@@ -93,25 +108,30 @@ if (!isset($_SESSION["admin_username"])) {
         </div>
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h3>Total Books</h3>
-                    <!-- Replace 'X' with the actual total number of books -->
-                    <p>X</p>
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <!-- <h3>Book Management</h3> -->
+                    <ul>
+                        <li><a href="#">Add Book</a></li>
+                        <li><a href="#">Search Book</a></li>
+                        <li><a href="#">Edit Book</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h3>Borrowed Books</h3>
-                    <!-- Replace 'Y' with the actual number of borrowed books -->
-                    <p>Y</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h3>Total Students</h3>
-                    <!-- Replace 'Z' with the actual total number of students -->
-                    <p>Z</p>
+            <div class="col-md-9">
+                <div class="content">
+                    <h2>Create Books</h2>
+
+                    <!-- 
+                    Title	
+                    PublisherId	
+                    PublicationDate	
+                    Type	
+                    ISBN	
+
+
+                     -->
+                    <!-- Add your books content here -->
                 </div>
             </div>
         </div>

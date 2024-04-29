@@ -100,8 +100,8 @@ if (!isset($_SESSION["admin_username"])) {
         <div class="menu">
             <ul>
                 <li><a href="home.php">Home</a></li>
-                <li><a href="books.php">Books</a></li>
-                <li><a href="#">Students</a></li>
+                <li><a href="book.php">Books</a></li>
+                <li><a href="student_dash.php">Readers</a></li>
                 <li><a href="#">Transactions</a></li>
                 <li><a href="logout.php" class="logout-btn">Logout</a></li>
             </ul>
@@ -112,7 +112,7 @@ if (!isset($_SESSION["admin_username"])) {
                 <div class="sidebar">
                     <!-- <h3>Book Management</h3> -->
                     <ul>
-                        <li><a href="#">Add Book</a></li>
+                        <li><a href="createbook.php">Add Book</a></li>
                         <li><a href="#">Search Book</a></li>
                         <li><a href="#">Edit Book</a></li>
                     </ul>
