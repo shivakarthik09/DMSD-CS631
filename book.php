@@ -115,6 +115,8 @@ if (!isset($_SESSION["admin_username"])) {
                         <li><a href="createbook.php">Add Book</a></li>
                         <li><a href="#">Search Book</a></li>
                         <li><a href="#">Edit Book</a></li>
+                        <li><a href="#">Detele book</a></li>
+
                     </ul>
                 </div>
             </div>

@@ -8,7 +8,7 @@ if (!isset($_SESSION["admin_username"])) {
 }
 
 // Database connection
-$conn = new mysqli('localhost', 'root', '', 'LibraryManagement');
+$conn = new mysqli('localhost:3306', 'root', '', 'LibraryManagement');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

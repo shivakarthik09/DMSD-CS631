@@ -1,5 +1,5 @@
 <?php
-	include 'templates/session.php';
+	#include 'templates/session.php';
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +49,7 @@
         <h1>Login</h1>
 
         <div class="login-options">
-			
+
 		<a href="adminlogin.php">Login as Admin</a>
             <a href="student.php">Login as Student</a>
         </div>

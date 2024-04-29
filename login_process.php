@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include 'templates/session.php';
+#include 'templates/session.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve username and password from form
@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     // Include database connection code here
-    $conn = new mysqli('localhost', 'root', '', 'LibraryManagement');
+    $conn = new mysqli('127.0.0.1', 'root', '', 'LibraryManagement');
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
