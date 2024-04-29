@@ -1,111 +1,59 @@
-<?php include 'templates/session.php'; ?>
 <?php
-	$where = '';
-	if(isset($_GET['category'])){
-		$catid = $_GET['category'];
-		$where = 'WHERE category_id = '.$catid;
-	}
+	include 'templates/session.php';
 ?>
-<?php include 'templates/header.php'; ?>
-<body class="hold-transition skin-blue layout-top-nav">
-<div class="wrapper">
 
-	<?php include 'templates/navbar.php'; ?>
-	 
-	  <div class="content-wrapper">
-	    <div class="container">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-options {
+            display: flex;
+            justify-content: center;
+        }
+        .login-options a {
+            text-decoration: none;
+            color: #333;
+            padding: 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        .login-options a:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
 
-	      <!-- Main content -->
-	      <section class="content">
-	        <div class="row">
-	        	<div class="col-sm-8 col-sm-offset-2">
-	        		<?php
-	        			if(isset($_SESSION['error'])){
-	        				echo "
-	        					<div class='alert alert-danger'>
-	        						".$_SESSION['error']."
-	        					</div>
-	        				";
-	        				unset($_SESSION['error']);
-	        			}
-	        		?>
-	        		<div class="box">
-	        			<div class="box-header with-border">
-	        				<div class="input-group">
-				                <input type="text" class="form-control input-lg" id="searchBox" placeholder="Search for ISBN, Title or Author">
-				                <span class="input-group-btn">
-				                    <button type="button" class="btn btn-primary btn-flat btn-lg"><i class="fa fa-search"></i> </button>
-				                </span>
-				            </div>
-	        			</div>
-	        			<div class="box-body">
-	        				<div class="input-group col-sm-5">
-				                <span class="input-group-addon">Category:</span>
-				                <select class="form-control" id="catlist">
-				                	<option value=0>ALL</option>
-				                	<?php
-				                		$sql = "SELECT * FROM category";
-				                		$query = $conn->query($sql);
-				                		while($catrow = $query->fetch_assoc()){
-				                			$selected = ($catid == $catrow['id']) ? " selected" : "";
-				                			echo "
-				                				<option value='".$catrow['id']."' ".$selected.">".$catrow['name']."</option>
-				                			";
-				                		}
-				                	?>
-				                </select>
-				             </div>
-	        				<table class="table table-bordered table-striped" id="booklist">
-			        			<thead>
-			        				<th>ISBN</th>
-			        				<th>Title</th>
-			        				<th>Author</th>
-			        				<th>Status</th>
-			        			</thead>
-			        			<tbody>
-			        			<?php
-			        				$sql = "SELECT * FROM books $where";
-			        				$query = $conn->query($sql);
-			        				while($row = $query->fetch_assoc()){
-			        					$status = ($row['status'] == 0) ? '<span class="label label-success">available</span>' : '<span class="label label-danger">not available</span>';
-			        					echo "
-			        						<tr>
-			        							
-			        							<td>".$row['isbn']."</td>
-			        							<td>".$row['title']."</td>
-			        							<td>".$row['author']."</td>
-			        							<td>".$status."</td>
-			        						</tr>
-			        					";
-			        				}
-			        			?>
-			        			</tbody>
-			        		</table>
-	        			</div>
-	        		</div>
-	        	</div>
-	        </div>
-	      </section>
-	     
-	    </div>
-	  </div>
-  
-  	<?php include 'templates/footer.php'; ?>
-</div>
+    <div class="container">
+        <h1>Login</h1>
 
-<?php include 'templates/scripts.php'; ?>
-<script>
-$(function(){
-	$('#catlist').on('change', function(){
-		if($(this).val() == 0){
-			window.location = 'index.php';
-		}
-		else{
-			window.location = 'index.php?category='+$(this).val();
-		}
-		
-	});
-});
-</script>
+        <div class="login-options">
+			
+		<a href="adminlogin.php">Login as Admin</a>
+            <a href="student.php">Login as Student</a>
+        </div>
+    </div>
+
 </body>
 </html>
