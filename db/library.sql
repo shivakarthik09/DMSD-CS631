@@ -1,6 +1,15 @@
 -- Create Database
 CREATE DATABASE IF NOT EXISTS LibraryManagement;
 USE LibraryManagement;
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(60) NOT NULL,
+  `firstname` varchar(30) NOT NULL,
+  `lastname` varchar(30) NOT NULL,
+  `photo` varchar(200) NOT NULL,
+  `created_on` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Create Publisher Table
 CREATE TABLE IF NOT EXISTS Publisher (

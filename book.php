@@ -100,6 +100,7 @@ if (!isset($_SESSION["admin_username"])) {
         <div class="menu">
             <ul>
                 <li><a href="home.php">Home</a></li>
+                <li><a href="Document_copy.php">Document</a></li>
                 <li><a href="book.php">Books</a></li>
                 <li><a href="student_dash.php">Readers</a></li>
                 <li><a href="#">Transactions</a></li>
@@ -115,7 +116,7 @@ if (!isset($_SESSION["admin_username"])) {
                         <li><a href="createbook.php">Add Book</a></li>
                         <li><a href="#">Search Book</a></li>
                         <li><a href="#">Edit Book</a></li>
-                        <li><a href="#">Detele book</a></li>
+
 
                     </ul>
                 </div>

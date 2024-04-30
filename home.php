@@ -63,7 +63,7 @@ if (!isset($_SESSION["admin_username"])) {
         .menu ul li a:hover {
             background-color: #ccc;
         }
-      
+
         .logout-btn:hover {
             background-color: #a93226;
         }
@@ -85,7 +85,10 @@ if (!isset($_SESSION["admin_username"])) {
     <div class="container">
         <div class="menu">
             <ul>
+
+                <li><a href="Document_copy.php">Document</a></li>
                 <li><a href="book.php">Books</a></li>
+                <li><a href="Management Insights.php">Management Insights</a></li>
                 <li><a href="student_dash.php">Readers</a></li>
                 <li><a href="#">Transactions</a></li>
                 <li><a href="logout.php" class="logout-btn">Logout</a></li>

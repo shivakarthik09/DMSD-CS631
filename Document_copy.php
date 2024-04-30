@@ -19,7 +19,7 @@ $records_per_page = 5;
 $offset = ($page - 1) * $records_per_page;
 
 // Query to retrieve reader's information
-$sql = "SELECT * FROM Reader LIMIT $offset, $records_per_page";
+$sql = "SELECT * FROM Copy LIMIT $offset, $records_per_page";
 $result = $conn->query($sql);
 
 
@@ -141,68 +141,73 @@ $result = $conn->query($sql);
 </head>
 <body>
 
-    <div class="header">
-        <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
-    </div>
+  <div class="header">
+      <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
+  </div>
 
-    <div class="container">
-        <div class="menu">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="Document_copy.php">Document</a></li>
-                <li><a href="book.php">Books</a></li>
-                <li><a href="student_dash.php">Readers</a></li>
-                <li><a href="#">Transactions</a></li>
-                <li><a href="logout.php" class="logout-btn">Logout</a></li>
-            </ul>
-        </div>
+  <div class="container">
+      <div class="menu">
+          <ul>
+              <li><a href="home.php">Home</a></li>
+              <li><a href="Document_copy.php">Documents</a></li>
+              <li><a href="book.php">Books</a></li>
+              <li><a href="student_dash.php">Readers</a></li>
+              <li><a href="#">Transactions</a></li>
+              <li><a href="logout.php" class="logout-btn">Logout</a></li>
+          </ul>
+      </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <div class="sidebar">
-                    <!-- <h3>Book Management</h3> -->
-                    <ul>
-                        <li><a href="#">Add Readers</a></li>
-                        <li><a href="#">Search Readers</a></li>
-                        <li><a href="#">Edit Readers</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-9">
-                <div class="content">
-                <h2>Readers</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Phone Number</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>" . $row["Name"] . "</td>";
-                                echo "<td>" . $row["Address"] . "</td>";
-                                echo "<td>" . $row["PhoneNumber"] . "</td>";
-                                echo "<td>" . $row["Type"] . "</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='4'>No readers found</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+      <div class="row">
+          <div class="col-md-3">
+              <div class="sidebar">
+                  <!-- <h3>Book Management</h3> -->
+                  <ul>
+                      <li><a href="addcopy.php">Add Copy</a></li>
+                      <li><a href="Searchcopy.php">Search Copy</a></li>
+                      <li><a href="editcopy.php">Edit Copy</a></li>
+
+
+                  </ul>
+              </div>
+          </div>
+          <div class="col-md-9">
+              <div class="content">
+                  <h2>Documents</h2>
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th>Copy ID</th>
+                                  <th>DID</th>
+                                  <th>BID</th>
+                                  <th>Shelf Numer</th>
+                                  <th>Position</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <?php
+                              if ($result->num_rows > 0) {
+                                  // Output data of each row
+                                  while ($row = $result->fetch_assoc()) {
+                                      echo "<tr>";
+                                      echo "<td>" . $row["CopyId"] . "</td>";
+                                      echo "<td>" . $row["DId"] . "</td>";
+                                      echo "<td>" . $row["BId"] . "</td>";
+                                      echo "<td>" . $row["Position"] . "</td>";
+                                      echo "<td>" . $row["Status"] . "</td>";
+                                      echo "</tr>";
+                                  }
+                              } else {
+                                  echo "<tr><td colspan='4'>No Documents found</td></tr>";
+                              }
+                              ?>
+                            </tbody>
+                        </table>
+                    </div>
+
             <!-- Pagination -->
             <?php
-            $sql = "SELECT COUNT(*) AS total FROM Reader";
+            $sql = "SELECT COUNT(*) AS total FROM Copy";
             $result = $conn->query($sql);
             $row = $result->fetch_assoc();
             $total_pages = ceil($row["total"] / $records_per_page);

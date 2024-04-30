@@ -1,3 +1,8 @@
+INSERT INTO `admin` (`id`, `username`, `password`, `firstname`, `lastname`, `photo`, `created_on`) VALUES
+(1, 'tejas', '$2y$10$1VmOehdw8EfSiTn.wRR2EOmRviX23G6G/8KrbTRkAatc4dRTBLB2q', 'Lyndon', 'Bermoy', 'profile_youtube.jpg', '2018-05-03')
+(2, 'Karthik', '$2b$12$Fc2hKviu/PlvEDWpl1QYfeZokCrb/oq0qZbwypsnHdjCyXiNSU.r.', 'Shiva', 'Karthik', 'profile_youtube.jpg', '2018-05-03')
+(3, 'Nithin', '$2b$12$G/HEgHicSnETk3k0v//sj.1.mYu7a2KklYhnLLwqsQKMmyMjEnrdC', 'Nithin', 'Krishna', 'profile_youtube.jpg', '2018-05-03');
+
 INSERT INTO Reader (Name, Address, PhoneNumber, Type) VALUES
 ('John Doe', '123 Main St, Seattle, WA 98101', '111-111-1111', 'Student'),
 ('Alice Johnson', '456 Elm St, Seattle, WA 98102', '222-222-2222', 'Senior Citizen'),
@@ -154,10 +159,3 @@ INSERT INTO Fine (BNum, FineDate, FineAmount) VALUES
 (8, '2022-07-05', 5.00), -- Fine of $5.00 for BNum 8 on July 5, 2022
 (9, NULL, NULL), -- No fine for BNum 9
 (10, '2022-07-10', 2.25); -- Fine of $2.25 for BNum 10 on July 10, 2022
-
-
-
-
-
-
-
