@@ -136,6 +136,8 @@
 // Retrieve student ID from the form
 if (isset($_GET['student_id'])) {
     $student_id = $_GET['student_id'];
+
+
     
     // Query to get borrowed books by the student along with fine calculation
     $sql = "SELECT Document.Title, Borrowing.BorrowDate, Borrowing.ReturnDate, Borrowing.FineAmount
@@ -145,6 +147,22 @@ if (isset($_GET['student_id'])) {
             WHERE Borrowing.RId = $student_id";
 
     $result = $conn->query($sql);
+
+
+    $sqll = "SELECT Name FROM Reader WHERE RId = $student_id";
+    $result1 = $conn->query($sqll);
+    // $stmt1 = $conn->prepare($sqll);
+    // $stmt1->bind_param("i", $student_id);
+    // $stmt1->execute();
+    // $result1 = $stmt1->get_result();
+
+    if ($result1->num_rows > 0) {
+        $row1 = $result1->fetch_assoc();
+        echo "<center><b>Welcome " . $row1['Name']."</b></center>";
+    } else {
+        echo "No reader found with the provided ID.";
+    }
+// }
 
     if ($result->num_rows > 0) {
         // Display borrowed books along with fine in a table
@@ -169,8 +187,11 @@ if (isset($_GET['student_id'])) {
 
 
 ?>
-
+<br>
 <a href="index.php">Home</a>
+<br>
+<br>
+<center>Note: Checkout, returns and reservation contact admin.</center>
 
 
 </div>
