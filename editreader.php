@@ -6,30 +6,25 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
-include 'Dbconnection.php';
 
-// Check if the form is submitted and Reader ID is provided
+$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+// Check if the form is submitted and $_POST values are set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
     // Retrieve Reader ID from the form
     $RId = $_POST['RId'];
 
-    // Query to select reader information from the database based on the provided Reader ID
-    $sql = "SELECT * FROM `Reader` WHERE `RId` = '$RId'";
-    $result = $conn->query($sql);
-
-    // Check if any matching reader is found
-    if ($result->num_rows > 0) {
-        // Output the reader information in a table
-        echo "<h2>Reader Information</h2>";
-        echo "<table class='table'>";
-        echo "<tr><th>RID</th><th>Name</th><th>Address</th><th>Phone Number</th><th>Type</th></tr>";
-        while($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["RId"] . "</td><td>" . $row["Name"] . "</td><td>" . $row["Address"] . "</td><td>" . $row["PhoneNumber"] . "</td><td>" . $row["Type"] . "</td></tr>";
+    // Check if delete button is clicked
+    if(isset($_POST['delete'])) {
+        // Delete the reader based on the provided Reader ID
+        $delete_sql = "DELETE FROM `Reader` WHERE `RId` = '$RId'";
+        if ($conn->query($delete_sql) === TRUE) {
+            echo "<script>alert('Reader deleted successfully')</script>";
+        } else {
+            echo "<script>alert('Error deleting reader: " . $conn->error . "')</script>";
         }
-        echo "</table>";
-    } else {
-        // If no matching reader is found, display a message
-        echo '<script>alert("No Reader found with the provided RId")</script>';
     }
 }
 ?>
@@ -158,34 +153,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
       <div class="menu">
           <ul>
               <li><a href="home.php">Home</a></li>
-
+              <li><a href="Document_copy.php">Documents</a></li>
               <li><a href="book.php">Books</a></li>
               <li><a href="student_dash.php">Readers</a></li>
-            
+              <li><a href="#">Transactions</a></li>
               <li><a href="logout.php" class="logout-btn">Logout</a></li>
           </ul>
       </div>
 
-
+      <div class="row">
+         
           <div class="col-md-9">
     <div class="content">
-        <h2>Search Reader</h2>
-        <!-- Vertical form for searching document copies -->
+        <h2>Edit/Delete Reader</h2>
+        <!-- Vertical form for inserting and deleting a document copy -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="form-group">
-                <label for="RId">Enter Reader ID:</label>
+            <div class="form-group">
+                <label for="RId">Reader Id:</label>
                 <input type="text" class="form-control" id="RId" name="RId">
             </div>
+            <div class="form-group">
+                <label for="Name">Name:</label>
+                <input type="text" class="form-control" id="Name" name="Name">
+            </div>
+            <div class="form-group">
+                <label for="Address">Address:</label>
+                <input type="text" class="form-control" id="Address" name="Address">
+            </div>
+            <div class="form-group">
+                <label for="PhoneNumber">PhoneNumber:</label>
+                <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber">
+            </div>
+            <div class="form-group">
+                <label for="Type">Type:</label>
+                <select class="form-control" id="Type" name="Type">
+                    <option value="Staff">Staff</option>
+                    <option value="Student">Student</option>
+                    <option value="Public">Public</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Edit Copy</button>
+        </form>
+        <br>
 
-            <button type="submit" class="btn btn-primary">Search</button>
-
+        <!-- Form for deleting a reader -->
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <div class="form-group">
+                <label for="RId">ReaderID to delete:</label>
+                <input type="text" class="form-control" id="RId" name="RId">
+            </div>
+            <button type="submit" class="btn btn-danger">Delete Reader</button>
         </form>
         <a href="student_dash.php" class="btn btn-secondary mt-3">Back</a>
     </div>
 </div>
 
 
-                
 
             </div>
         </div>
