@@ -6,13 +6,7 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
-
-// Database connection
-$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include 'Dbconnection.php';
 
 // Check if the form is submitted and Reader ID is provided
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
@@ -164,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
       <div class="menu">
           <ul>
               <li><a href="home.php">Home</a></li>
-              
+
               <li><a href="book.php">Books</a></li>
               <li><a href="student_dash.php">Readers</a></li>
               <li><a href="#">Transactions</a></li>
@@ -172,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
           </ul>
       </div>
 
-      
+
           <div class="col-md-9">
     <div class="content">
         <h2>Search Reader</h2>
@@ -182,9 +176,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
                 <label for="RId">Enter Reader ID:</label>
                 <input type="text" class="form-control" id="RId" name="RId">
             </div>
-            
+
             <button type="submit" class="btn btn-primary">Search</button>
-            
+
         </form>
         <a href="student_dash.php" class="btn btn-secondary mt-3">Back</a>
     </div>

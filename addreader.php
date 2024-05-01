@@ -7,12 +7,7 @@ if (!isset($_SESSION["admin_username"])) {
     exit;
 }
 
-// Database connection
-$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include 'Dbconnection.php';
 
 // Check if the form is submitted and $_POST values are set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Address'], $_POST['PhoneNumber'], $_POST['Type'])) {
@@ -26,11 +21,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
     // database insert SQL code
     $sql = "INSERT INTO `Reader` (`Name`, `Address`, `PhoneNumber`, `Type`) VALUES ( '$Name', '$Address', '$PhoneNumber', '$Type')";
 
-    // insert in database 
+    // insert in database
     $rs = mysqli_query($conn, $sql);
 
+<<<<<<< HEAD
     
 } 
+=======
+    if($rs) {
+        echo "New Reader Information Inserted";
+    }
+}
+>>>>>>> d951edf2729a9e91a371e9ef4fa446153573e5e4
 
 
 ?>
@@ -166,14 +168,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
 
         <div class="row">
             <div class="col-md-3">
-                
+
             </div>
             <div class="col-md-9">
                 <div class="content">
 <div class="container mt-4">
     <h2>Add Reader</h2>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        
+
         <div class="form-group">
             <label for="Name">Name:</label>
             <input type="text" class="form-control" id="Name" name="Name" required>
