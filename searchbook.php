@@ -6,6 +6,7 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -110,31 +111,15 @@ if (!isset($_SESSION["admin_username"])) {
         
             <div class="col-md-9">
                 <div class="content">
-                    <h2>Add Book</h2>
-                    <form action="createbook.php" method="POST">
+                    <h2>Search Book</h2>
+                    <form action="searchbook.php" method="POST">
                         <div class="form-group">
-                            <label for="title">Title:</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
+                            <label for="document_id">Document ID:</label>
+                            <input type="text" class="form-control" id="document_id" name="document_id" required>
                         </div>
-                        <div class="form-group">
-                            <label for="publisher_id">Publisher ID:</label>
-                            <input type="text" class="form-control" id="publisher_id" name="publisher_id" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="publication_date">Publication Date:</label>
-                            <input type="date" class="form-control" id="publication_date" name="publication_date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Type:</label>
-                            <input type="text" class="form-control" id="type" name="type" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="isbn">ISBN:</label>
-                            <input type="text" class="form-control" id="isbn" name="isbn" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Book</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </form>
-                    <a href="book.php" class="btn btn-secondary">Back to Books Management</a> <!-- Added back button -->
+                 <a href="book.php" class="btn btn-secondary">Back to Books Management</a> <!-- Added back button -->
                      <!-- Add your books content here -->
                 </div>
             </div>

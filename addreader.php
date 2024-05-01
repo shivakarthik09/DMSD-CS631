@@ -13,14 +13,35 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-?>
 
+// Check if the form is submitted and $_POST values are set
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Address'], $_POST['PhoneNumber'], $_POST['Type'])) {
+    // get the post records
+    // $RId = $_POST['RId'];
+    $Name = $_POST['Name'];
+    $Address = $_POST['Address'];
+    $PhoneNumber = $_POST['PhoneNumber'];
+    $Type= $_POST['Type'];
+
+    // database insert SQL code
+    $sql = "INSERT INTO `Reader` (`Name`, `Address`, `PhoneNumber`, `Type`) VALUES ( '$Name', '$Address', '$PhoneNumber', '$Type')";
+
+    // insert in database 
+    $rs = mysqli_query($conn, $sql);
+
+    if($rs) {
+        echo "New Reader Information Inserted";
+    }
+} 
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Books</title>
+    <title>Admin Dashboard - AddReader</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -109,7 +130,8 @@ if ($conn->connect_error) {
             color: #fff;
             padding: 20px;
             border-radius: 5px;
-            height: 100%;
+            height: 15%;
+            font-size:20px;
         }
         .sidebar ul {
             list-style-type: none;
@@ -129,62 +151,61 @@ if ($conn->connect_error) {
         }
     </style>
 </head>
-<body>
-
-  <div class="header">
-      <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
-  </div>
-
-  <div class="container">
-      <div class="menu">
-          <ul>
-              <li><a href="home.php">Home</a></li>
-              <li><a href="Document_copy.php">Documents</a></li>
-              <li><a href="book.php">Books</a></li>
-              <li><a href="student_dash.php">Readers</a></li>
-              <li><a href="#">Transactions</a></li>
-              <li><a href="logout.php" class="logout-btn">Logout</a></li>
-          </ul>
-      </div>
-
-      <div class="row">
-          <div class="col-md-3">
-              <div class="sidebar">
-                  <!-- <h3>Book Management</h3> -->
-                  <ul>
-                      <li><a href="addcopy.php">Add Copy</a></li>
-                      <li><a href="Searchcopy.php">Search Copy</a></li>
-                      <li><a href="editcopy.php">Edit Copy</a></li>
-
-
-                  </ul>
-              </div>
-          </div>
-          <div class="col-md-9">
-    <div class="content">
-        <h2>Search Copy</h2>
-        <!-- Vertical form for searching document copies -->
-        <form action="admin_functions.php?function=searchDocumentCopy" method="post">
-            <div class="form-group">
-                <label for="DId">Search by Document ID:</label>
-                <input type="text" class="form-control" id="DId" name="DId">
-            </div>
-            <div class="form-group">
-                <label for="BId">Search by Branch ID:</label>
-                <input type="text" class="form-control" id="BId" name="BId">
-            </div>
-            <button type="submit" class="btn btn-primary">Search Copy</button>
-        </form>
-
+<div class="header">
+        <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
     </div>
-</div>
 
-
-
-
-            </div>
+    <div class="container">
+        <div class="menu">
+            <ul>
+                <li><a href="home.php">Home</a></li>
+                <li><a href="book.php">Books</a></li>
+                <li><a href="student_dash.php">Readers</a></li>
+                <li><a href="#">Transactions</a></li>
+                <li><a href="logout.php" class="logout-btn">Logout</a></li>
+            </ul>
         </div>
-    </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                
+            </div>
+            <div class="col-md-9">
+                <div class="content">
+<div class="container mt-4">
+    <h2>Add Reader</h2>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" class="form-control" id="Name" name="Name">
+        </div>
+        <div class="form-group">
+            <label for="Address">Address:</label>
+            <input type="text" class="form-control" id="Address" name="Address">
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber">Phone Number:</label>
+            <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber">
+        </div>
+        <div class="form-group">
+            <label for="Type">Type:</label>
+            <input type="text" class="form-control" id="Type" name="Type">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <?php
+    // Display validation errors, if any
+    if (!empty($errors)) {
+        echo '<div class="alert alert-danger mt-3">';
+        foreach ($errors as $error) {
+            echo "<p>$error</p>";
+        }
+        echo '</div>';
+    }
+    ?>
+    <a href="student_dash.php" class="btn btn-secondary mt-3">Back</a> <!-- Back button -->
+</div>
 
 </body>
 </html>

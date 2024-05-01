@@ -8,7 +8,7 @@ if (!isset($_SESSION["admin_username"])) {
 }
 
 // Database connection
-$conn = new mysqli('localhost:3306', 'root', '', 'LibraryManagement');
+$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -163,9 +163,9 @@ $result = $conn->query($sql);
                 <div class="sidebar">
                     <!-- <h3>Book Management</h3> -->
                     <ul>
-                        <li><a href="#">Add Readers</a></li>
-                        <li><a href="#">Search Readers</a></li>
-                        <li><a href="#">Edit Readers</a></li>
+                        <li><a href="addreader.php">Add Readers</a></li>
+                        <li><a href="searchreader.php">Search Readers</a></li>
+                        <li><a href="editreader.php">Edit Readers</a></li>
                     </ul>
                 </div>
             </div>

@@ -13,6 +13,31 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
+// Check if the form is submitted and Reader ID is provided
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
+    // Retrieve Reader ID from the form
+    $RId = $_POST['RId'];
+
+    // Query to select reader information from the database based on the provided Reader ID
+    $sql = "SELECT * FROM `Reader` WHERE `RId` = '$RId'";
+    $result = $conn->query($sql);
+
+    // Check if any matching reader is found
+    if ($result->num_rows > 0) {
+        // Output the reader information in a table
+        echo "<h2>Reader Information</h2>";
+        echo "<table class='table'>";
+        echo "<tr><th>RID</th><th>Name</th><th>Address</th><th>Phone Number</th><th>Type</th></tr>";
+        while($row = $result->fetch_assoc()) {
+            echo "<tr><td>" . $row["RId"] . "</td><td>" . $row["Name"] . "</td><td>" . $row["Address"] . "</td><td>" . $row["PhoneNumber"] . "</td><td>" . $row["Type"] . "</td></tr>";
+        }
+        echo "</table>";
+    } else {
+        // If no matching reader is found, display a message
+        echo "No reader found with the provided Reader ID.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +45,7 @@ if ($conn->connect_error) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Books</title>
+    <title>Admin Dashboard - Readers</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -139,7 +164,7 @@ if ($conn->connect_error) {
       <div class="menu">
           <ul>
               <li><a href="home.php">Home</a></li>
-              <li><a href="Document_copy.php">Documents</a></li>
+              
               <li><a href="book.php">Books</a></li>
               <li><a href="student_dash.php">Readers</a></li>
               <li><a href="#">Transactions</a></li>
@@ -147,35 +172,21 @@ if ($conn->connect_error) {
           </ul>
       </div>
 
-      <div class="row">
-          <div class="col-md-3">
-              <div class="sidebar">
-                  <!-- <h3>Book Management</h3> -->
-                  <ul>
-                      <li><a href="addcopy.php">Add Copy</a></li>
-                      <li><a href="Searchcopy.php">Search Copy</a></li>
-                      <li><a href="editcopy.php">Edit Copy</a></li>
-
-
-                  </ul>
-              </div>
-          </div>
+      
           <div class="col-md-9">
     <div class="content">
-        <h2>Search Copy</h2>
+        <h2>Search Reader</h2>
         <!-- Vertical form for searching document copies -->
-        <form action="admin_functions.php?function=searchDocumentCopy" method="post">
-            <div class="form-group">
-                <label for="DId">Search by Document ID:</label>
-                <input type="text" class="form-control" id="DId" name="DId">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="form-group">
+                <label for="RId">Enter Reader ID:</label>
+                <input type="text" class="form-control" id="RId" name="RId">
             </div>
-            <div class="form-group">
-                <label for="BId">Search by Branch ID:</label>
-                <input type="text" class="form-control" id="BId" name="BId">
-            </div>
-            <button type="submit" class="btn btn-primary">Search Copy</button>
+            
+            <button type="submit" class="btn btn-primary">Search</button>
+            
         </form>
-
+        <a href="student_dash.php" class="btn btn-secondary mt-3">Back</a>
     </div>
 </div>
 
