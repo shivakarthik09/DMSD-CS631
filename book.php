@@ -6,6 +6,23 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
+
+// Database connection
+$conn = new mysqli('localhost:3306', 'root', '', 'LibraryManagement');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Pagination variables
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$records_per_page = 5;
+$offset = ($page - 1) * $records_per_page;
+
+// Query to retrieve reader's information
+$sql = "SELECT * FROM Document LIMIT $offset, $records_per_page";
+$result = $conn->query($sql);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +76,44 @@ if (!isset($_SESSION["admin_username"])) {
         .menu ul li a:hover {
             background-color: #ccc;
         }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+        }
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
         .sidebar {
             background-color: #333;
             color: #fff;
@@ -82,48 +137,87 @@ if (!isset($_SESSION["admin_username"])) {
         .sidebar ul li a:hover {
             color: #ccc;
         }
-        .content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
-    </div>
+  <div class="header">
+      <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
+  </div>
 
-    <div class="container">
-        <div class="menu">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="Document_copy.php">Documents</a></li>
-                <li><a href="Management Insights.php">Management Insights</a></li>
-                <li><a href="book.php">Books</a></li>
-                <li><a href="student_dash.php">Readers</a></li>
-                
-                <li><a href="logout.php" class="logout-btn">Logout</a></li>
-            </ul>
-        </div>
+  <div class="container">
+      <div class="menu">
+          <ul>
+              <li><a href="home.php">Home</a></li>
+              <li><a href="Document_copy.php">Documents</a></li>
+              <li><a href="Management Insights.php">Management Insights</a></li>
+              <li><a href="book.php">Books</a></li>
+              <li><a href="student_dash.php">Readers</a></li>
+              
+              <li><a href="logout.php" class="logout-btn">Logout</a></li>
+          </ul>
+      </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <div class="sidebar">
-                     <h4>Books Management</h4>
-                    <ul>
-                        <li><a href="createbook.php">Add Book</a></li>
-                        <li><a href="searchbook.php">Search Book</a></li>
-                        <li><a href="editbook.php">Edit/Delete Book</a></li>
-                    </ul>
-                </div>
+      <div class="row">
+          <div class="col-md-3">
+              <div class="sidebar">
+                  <!-- <h3>Book Management</h3> -->
+                  <ul>
+                      <li><a href="createbook.php">Add Book</a></li>
+                      <li><a href="searchbook.php">Search Book</a></li>
+
+
+
+                  </ul>
+              </div>
+          </div>
+          <div class="col-md-9">
+              <div class="content">
+                  <h2>Books</h2>
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th>Document ID</th>
+                                  <th>Title</th>
+                                  <th>PublicationDate</th>
+                                  <th>Type</th>
+                                  <th>ISBN</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <?php
+                              if ($result->num_rows > 0) {
+                                  // Output data of each row
+                                  while ($row = $result->fetch_assoc()) {
+                                      echo "<tr>";
+                                      echo "<td>" . $row["DId"] . "</td>";
+                                      echo "<td>" . $row["Title"] . "</td>";
+                                      echo "<td>" . $row["PublicationDate"] . "</td>";
+                                      echo "<td>" . $row["Type"] . "</td>";
+                                      echo "<td>" . $row["ISBN"] . "</td>";
+                                      echo "</tr>";
+                                  }
+                              } else {
+                                  echo "<tr><td colspan='4'>No Book found</td></tr>";
+                              }
+                              ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+            <!-- Pagination -->
+            <?php
+            $sql = "SELECT COUNT(*) AS total FROM Document";
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $total_pages = ceil($row["total"] / $records_per_page);
+            ?>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                    <a href="?page=<?php echo $i; ?>" <?php if ($i == $page) echo "class='active'"; ?>><?php echo $i; ?></a>
+                <?php endfor; ?>
             </div>
-            <div class="col-md-9">
-                <div class="content">
-                    <h2>Books</h2>
-                    <!-- Add your books content here -->
                 </div>
             </div>
         </div>

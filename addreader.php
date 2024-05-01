@@ -8,6 +8,7 @@ if (!isset($_SESSION["admin_username"])) {
 }
 
 include 'Dbconnection.php';
+$rs = false; // Initialize $rs outside of the conditional block
 
 // Check if the form is submitted and $_POST values are set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Address'], $_POST['PhoneNumber'], $_POST['Type'])) {
@@ -15,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
     // $RId = $_POST['RId'];
     $Name = $_POST['Name'];
     $Address = $_POST['Address'];
-    $PhoneNumber = $_POST['PhoneNumber'];   
+    $PhoneNumber = $_POST['PhoneNumber'];
     $Type= $_POST['Type'];
 
     // database insert SQL code
@@ -24,15 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
     // insert in database
     $rs = mysqli_query($conn, $sql);
 
-<<<<<<< HEAD
-    
-} 
-=======
-    if($rs) {
+
+
+}
+    if(!$rs) {
         echo "New Reader Information Inserted";
     }
-}
->>>>>>> d951edf2729a9e91a371e9ef4fa446153573e5e4
+
 
 
 ?>
@@ -161,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
                 <li><a href="home.php">Home</a></li>
                 <li><a href="book.php">Books</a></li>
                 <li><a href="student_dash.php">Readers</a></li>
-                
+
                 <li><a href="logout.php" class="logout-btn">Logout</a></li>
             </ul>
         </div>
@@ -190,8 +189,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
         </div>
         <div class="form-group">
             <label for="Type">Type of Reader:</label>
-            
-           
+
+
 
             <select name="Type" id="TypeSelect" class="form-control" required >
             <option value="Select">Select</option>
@@ -201,10 +200,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
             <option value="Other">Other</option>
         </select>
         </div>
-    
-    
+
+
         <button onclick="myFunction()"  class="btn btn-secondary mt-3">Submit</button>
-        
+
 
     </form>
     <script>

@@ -7,10 +7,7 @@ if (!isset($_SESSION["admin_username"])) {
     exit;
 }
 
-$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'Dbconnection.php';
 // Check if the form is submitted and $_POST values are set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
     // Retrieve Reader ID from the form
@@ -162,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
       </div>
 
       <div class="row">
-         
+
           <div class="col-md-9">
     <div class="content">
         <h2>Edit/Delete Reader</h2>
