@@ -65,14 +65,28 @@
 
 <div class="container">
     <h1>Welcome, Student!</h1>
-
+    
     <div class="search-form">
         <form action="" method="GET">
-            <input type="text" name="student_id" placeholder="Enter your student ID" required>
-            <button type="submit">Search Books</button>
+            <input type="text" name="student_id" placeholder="Enter your ID" required>
+            <button type="submit">Search Borrowing</button>
         </form>
     </div>
 
+   
+
+    <div class="search-form">
+<form action="" method="post">
+        <label for="search">Search by:</label>
+        <select name="search_by" id="search_by">
+            <option value="DId">DId</option>
+            <option value="Title">Title</option>
+        </select>
+        <input type="text" name="search_term" id="search_term">
+        <button type="submit" name="search_btn">Search</button>
+    </form>
+    </div>
+    <br>
     <?php
     // Database connection
     $conn = new mysqli('localhost', 'root', '', 'LibraryManagement');
@@ -80,32 +94,84 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Retrieve student ID from the form
-    if (isset($_GET['student_id'])) {
-        $student_id = $_GET['student_id'];
-        
-        // Query to get borrowed books by the student
-        $sql = "SELECT Document.Title, Borrowing.BorrowDate, Borrowing.ReturnDate
-                FROM Borrowing
-                INNER JOIN Copy ON Borrowing.CopyId = Copy.CopyId
-                INNER JOIN Document ON Copy.DId = Document.DId
-                WHERE Borrowing.RId = $student_id";
+    // Fetching data based on search criteria
+    if (isset($_POST['search_btn'])) {
+        $search_by = $_POST['search_by'];
+        $search_term = $_POST['search_term'];
 
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM Document WHERE $search_by = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $search_term);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            // Display borrowed books in a table
             echo "<table>";
-            echo "<tr><th>Title</th><th>Borrow Date</th><th>Return Date</th></tr>";
+            echo "<tr><th>DId</th><th>Title</th><th>PublisherId</th><th>PublicationDate</th><th>Type</th><th>ISBN</th></tr>";
             while ($row = $result->fetch_assoc()) {
-                echo "<tr><td>".$row['Title']."</td><td>".$row['BorrowDate']."</td><td>".$row['ReturnDate']."</td></tr>";
+                echo "<tr>";
+                echo "<td>" . $row['DId'] . "</td>";
+                echo "<td>" . $row['Title'] . "</td>";
+                echo "<td>" . $row['PublisherId'] . "</td>";
+                echo "<td>" . $row['PublicationDate'] . "</td>";
+                echo "<td>" . $row['Type'] . "</td>";
+                echo "<td>" . $row['ISBN'] . "</td>";
+                echo "</tr>";
             }
             echo "</table>";
         } else {
-            echo "No borrowed books found for this student.";
+            echo "No results found.";
         }
     }
-    ?>
+?>
+
+    <?php
+// // Database connection
+// $conn = new mysqli('localhost', 'root', '', 'LibraryManagement');
+// if ($conn->connect_error) {
+//     die("Connection failed: " . $conn->connect_error);
+// }
+
+
+// Retrieve student ID from the form
+if (isset($_GET['student_id'])) {
+    $student_id = $_GET['student_id'];
+    
+    // Query to get borrowed books by the student along with fine calculation
+    $sql = "SELECT Document.Title, Borrowing.BorrowDate, Borrowing.ReturnDate, Borrowing.FineAmount
+            FROM Borrowing
+            INNER JOIN Copy ON Borrowing.CopyId = Copy.CopyId
+            INNER JOIN Document ON Copy.DId = Document.DId
+            WHERE Borrowing.RId = $student_id";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Display borrowed books along with fine in a table
+        echo "<table>";
+        echo "<tr><th>Title</th><th>Borrow Date</th><th>Return Date</th><th>Fine Amount</th></tr>";
+        while ($row = $result->fetch_assoc()) {
+            // Calculate fine based on return date and current date
+            $returnDate = new DateTime($row['ReturnDate']);
+            $currentDate = new DateTime();
+            $fine = 0;
+            if ($returnDate < $currentDate) {
+                $daysLate = $currentDate->diff($returnDate)->days;
+                $fine = $daysLate * $row['FineAmount'];
+            }
+            echo "<tr><td>".$row['Title']."</td><td>".$row['BorrowDate']."</td><td>".$row['ReturnDate']."</td><td>$".$fine."</td></tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "No borrowed books found for this student.";
+    }
+}
+
+
+?>
+
+<a href="index.php">Home</a>
+
 
 </div>
 
