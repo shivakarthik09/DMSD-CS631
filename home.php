@@ -6,6 +6,22 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
+include 'Dbconnection.php';
+
+// Query to get the total number of books
+$totalBooksQuery = "SELECT COUNT(*) AS total_books FROM Document";
+$totalBooksResult = $conn->query($totalBooksQuery);
+$totalBooks = ($totalBooksResult->num_rows > 0) ? $totalBooksResult->fetch_assoc()['total_books'] : 0;
+
+// Query to get the number of borrowed books
+$borrowedBooksQuery = "SELECT COUNT(*) AS borrowed_books FROM Borrowing";
+$borrowedBooksResult = $conn->query($borrowedBooksQuery);
+$borrowedBooks = ($borrowedBooksResult->num_rows > 0) ? $borrowedBooksResult->fetch_assoc()['borrowed_books'] : 0;
+
+// Query to get the total number of students
+$totalStudentsQuery = "SELECT COUNT(*) AS total_students FROM Reader WHERE Type = 'Student'";
+$totalStudentsResult = $conn->query($totalStudentsQuery);
+$totalStudents = ($totalStudentsResult->num_rows > 0) ? $totalStudentsResult->fetch_assoc()['total_students'] : 0;
 ?>
 
 <!DOCTYPE html>
@@ -96,28 +112,28 @@ if (!isset($_SESSION["admin_username"])) {
         </div>
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h3>Total Books</h3>
-                    <!-- Replace 'X' with the actual total number of books -->
-                    <p>X</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h3>Borrowed Books</h3>
-                    <!-- Replace 'Y' with the actual number of borrowed books -->
-                    <p>Y</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h3>Total Students</h3>
-                    <!-- Replace 'Z' with the actual total number of students -->
-                    <p>Z</p>
-                </div>
-            </div>
+    <div class="col-md-4">
+        <div class="info-box">
+            <h3>Total Books</h3>
+            <!-- Display the total number of books -->
+            <p><?php echo $totalBooks; ?></p>
         </div>
+    </div>
+    <div class="col-md-4">
+        <div class="info-box">
+            <h3>Borrowed Books</h3>
+            <!-- Display the number of borrowed books -->
+            <p><?php echo $borrowedBooks; ?></p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="info-box">
+            <h3>Total Students</h3>
+            <!-- Display the total number of students -->
+            <p><?php echo $totalStudents; ?></p>
+        </div>
+    </div>
+</div>
     </div>
 
 </body>

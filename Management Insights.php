@@ -172,7 +172,7 @@ $result = $conn->query($sql);
                       <h3>Top N Borrowers in Branch</h3>
                       <form action="library_functions.php" method="get">
                           <div class="form-group">
-                              <label for="N">Enter N:</label>
+                              <label for="N">Enter Top N:</label>
                               <input type="number" id="N" name="N" class="form-control" required>
                           </div>
                           <div class="form-group">
@@ -188,7 +188,7 @@ $result = $conn->query($sql);
                       <h3>Top N Borrowers in Library</h3>
                       <form action="library_functions.php" method="get">
                           <div class="form-group">
-                              <label for="N">Enter N:</label>
+                              <label for="N">Enter Top N:</label>
                               <input type="number" id="N" name="N" class="form-control" required>
                           </div>
                           <button type="submit" name="function" value="topNBorrowersInLibrary" class="btn btn-primary">Submit</button>
