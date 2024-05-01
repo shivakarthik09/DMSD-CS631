@@ -228,7 +228,7 @@ if (isset($_GET['function'])) {
             break;
         case 'EditDocumentCopy':
             if (isset($_POST['CopyId'], $_POST['DID'], $_POST['BID'], $_POST['Position'], $_POST['Status'])) {
-                editDocumentCopy($_POST['CopyId'], $_POST['DId'], $_POST['BId'], $_POST['Position'], $_POST['Status']);
+                editDocumentCopy($_POST['CopyId'], $_POST['DID'], $_POST['BID'], $_POST['Position'], $_POST['Status']);
             } else {
                 echo "Error: Missing parameters for editing document copy.";
             }
