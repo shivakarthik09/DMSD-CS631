@@ -6,6 +6,13 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
+
+// Database connection
+$conn = new mysqli('localhost:3306', 'root', '', 'LibraryManagement');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +66,44 @@ if (!isset($_SESSION["admin_username"])) {
         .menu ul li a:hover {
             background-color: #ccc;
         }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+        }
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
         .sidebar {
             background-color: #333;
             color: #fff;
@@ -82,57 +127,71 @@ if (!isset($_SESSION["admin_username"])) {
         .sidebar ul li a:hover {
             color: #ccc;
         }
-        .content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
-    </div>
+  <div class="header">
+      <h1>Welcome, <?php echo $_SESSION["admin_username"]; ?>!</h1>
+  </div>
 
-    <div class="container">
-        <div class="menu">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="book.php">Books</a></li>
-                <li><a href="student_dash.php">Readers</a></li>
-                <li><a href="#">Transactions</a></li>
-                <li><a href="logout.php" class="logout-btn">Logout</a></li>
-            </ul>
-        </div>
+  <div class="container">
+      <div class="menu">
+          <ul>
+              <li><a href="home.php">Home</a></li>
+              <li><a href="Document_copy.php">Documents</a></li>
+              <li><a href="book.php">Books</a></li>
+              <li><a href="student_dash.php">Readers</a></li>
+              <li><a href="#">Transactions</a></li>
+              <li><a href="logout.php" class="logout-btn">Logout</a></li>
+          </ul>
+      </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <div class="sidebar">
-                    <!-- <h3>Book Management</h3> -->
-                    <ul>
-                        <li><a href="#">Add Book</a></li>
-                        <li><a href="#">Search Book</a></li>
-                        <li><a href="#">Edit Book</a></li>
-                    </ul>
-                </div>
+      <div class="row">
+          <div class="col-md-3">
+              <div class="sidebar">
+                  <!-- <h3>Book Management</h3> -->
+                  <ul>
+                      <li><a href="createbook.php">Add Book</a></li>
+                      <li><a href="#">Search Book</a></li>
+                      <li><a href="#">Edit Book</a></li>
+
+
+                  </ul>
+              </div>
+          </div>
+          <div class="col-md-9">
+    <div class="content">
+        <h2>Add Book</h2>
+        <!-- Vertical form for inserting a document copy -->
+        <form action="admin_functions.php?function=addbookcopy" method="post">
+            <div class="form-group">
+                <label for="Title">Title:</label>
+                <input type="text" class="form-control" id="Title" name="Title">
             </div>
-            <div class="col-md-9">
-                <div class="content">
-                    <h2>Create Books</h2>
+            <div class="form-group">
+                <label for="PublisherId">PublisherId:</label>
+                <input type="text" class="form-control" id="PublisherId" name="PublisherIdBID">
+            </div>
+            <div class="form-group">
+                <label for="PublicationDate">PublicationDate:</label>
+                <input type="text" class="form-control" id="PublicationDate" name="PublicationDate">
+            </div>
+            <div class="form-group">
+                <label for="Type">Type:</label>
+                <input type="text" class="form-control" id="Type" name="Type">
+            <div class="form-group">
+                <label for="ISBN">ISBN:</label>
+                <input type="text" class="form-control" id="ISBN" name="ISBN">
+            </div>
 
-                    <!-- 
-                    Title	
-                    PublisherId	
-                    PublicationDate	
-                    Type	
-                    ISBN	
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </form>
+    </div>
+</div>
 
 
-                     -->
-                    <!-- Add your books content here -->
-                </div>
+
             </div>
         </div>
     </div>

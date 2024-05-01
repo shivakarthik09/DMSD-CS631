@@ -150,6 +150,7 @@ $result = $conn->query($sql);
           <ul>
               <li><a href="home.php">Home</a></li>
               <li><a href="Document_copy.php">Documents</a></li>
+              <li><a href="Management Insights.php">Management Insights</a></li>
               <li><a href="book.php">Books</a></li>
               <li><a href="student_dash.php">Readers</a></li>
               <li><a href="#">Transactions</a></li>
@@ -162,13 +163,7 @@ $result = $conn->query($sql);
               <div class="sidebar">
                   <!-- <h3>Book Management</h3> -->
                   <ul>
-                      <li><a href="addcopy.php">Add Copy</a></li>
-                      <li><a href="Searchcopy.php">Search Copy</a></li>
-                      <li><a href="editcopy.php">Edit Copy</a></li>
-                      <li><a href="addcopy.php">Add Copy</a></li>
-                      <li><a href="addcopy.php">Add Copy</a></li>
-                      <li><a href="addcopy.php">Add Copy</a></li>
-                      <li><a href="addcopy.php">Add Copy</a></li>
+
 
 
                   </ul>
@@ -176,53 +171,91 @@ $result = $conn->query($sql);
           </div>
           <div class="col-md-9">
               <div class="content">
-                  <h2>Documents</h2>
-                  <div class="table-responsive">
-                      <table class="table">
-                          <thead>
-                              <tr>
-                                  <th>Copy ID</th>
-                                  <th>DID</th>
-                                  <th>BID</th>
-                                  <th>Shelf Numer</th>
-                                  <th>Position</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <?php
-                              if ($result->num_rows > 0) {
-                                  // Output data of each row
-                                  while ($row = $result->fetch_assoc()) {
-                                      echo "<tr>";
-                                      echo "<td>" . $row["CopyId"] . "</td>";
-                                      echo "<td>" . $row["DId"] . "</td>";
-                                      echo "<td>" . $row["BId"] . "</td>";
-                                      echo "<td>" . $row["Position"] . "</td>";
-                                      echo "<td>" . $row["Status"] . "</td>";
-                                      echo "</tr>";
-                                  }
-                              } else {
-                                  echo "<tr><td colspan='4'>No Documents found</td></tr>";
-                              }
-                              ?>
-                            </tbody>
-                        </table>
-                    </div>
+                  <h2>Library Insights</h2>
 
-            <!-- Pagination -->
-            <?php
-            $sql = "SELECT COUNT(*) AS total FROM Copy";
-            $result = $conn->query($sql);
-            $row = $result->fetch_assoc();
-            $total_pages = ceil($row["total"] / $records_per_page);
-            ?>
-            <div class="pagination">
-                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
-                    <a href="?page=<?php echo $i; ?>" <?php if ($i == $page) echo "class='active'"; ?>><?php echo $i; ?></a>
-                <?php endfor; ?>
-            </div>
-                </div>
-            </div>
+                  <div class="form-section">
+                      <h3>Top N Borrowers in Branch</h3>
+                      <form action="library_functions.php" method="get">
+                          <div class="form-group">
+                              <label for="N">Enter N:</label>
+                              <input type="number" id="N" name="N" class="form-control" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="branchId">Enter Branch ID:</label>
+                              <input type="number" id="branchId" name="branchId" class="form-control" required>
+                          </div>
+                          <button type="submit" name="function" value="topNBorrowersInBranch" class="btn btn-primary">Submit</button>
+                      </form>
+                  </div>
+                  <br>
+
+                  <div class="form-section">
+                      <h3>Top N Borrowers in Library</h3>
+                      <form action="library_functions.php" method="get">
+                          <div class="form-group">
+                              <label for="N">Enter N:</label>
+                              <input type="number" id="N" name="N" class="form-control" required>
+                          </div>
+                          <button type="submit" name="function" value="topNBorrowersInLibrary" class="btn btn-primary">Submit</button>
+                      </form>
+                  </div>
+<br>
+                  <div class="form-section">
+                      <h3>N Most Borrowed Books in Branch</h3>
+                      <form action="library_functions.php" method="get">
+                          <div class="form-group">
+                              <label for="N">Enter N:</label>
+                              <input type="number" id="N" name="N" class="form-control" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="branchId">Enter Branch ID:</label>
+                              <input type="number" id="branchId" name="branchId" class="form-control" required>
+                          </div>
+                          <button type="submit" name="function" value="mostBorrowedBooksInBranch" class="btn btn-primary">Submit</button>
+                      </form>
+                  </div>
+<br>
+                  <div class="form-section">
+                      <h3>N Most Borrowed Books in Library</h3>
+                      <form action="library_functions.php" method="get">
+                          <div class="form-group">
+                              <label for="N">Enter N:</label>
+                              <input type="number" id="N" name="N" class="form-control" required>
+                          </div>
+                          <button type="submit" name="function" value="mostBorrowedBooksInLibrary" class="btn btn-primary">Submit</button>
+                      </form>
+                  </div>
+<br>
+                  <div class="form-section">
+                      <h3>10 Most Popular Books by Year</h3>
+                      <form action="library_functions.php" method="get">
+                          <div class="form-group">
+                              <label for="year">Enter Year:</label>
+                              <input type="number" id="year" name="year" class="form-control" required>
+                          </div>
+                          <button type="submit" name="function" value="mostPopularBooksByYear" class="btn btn-primary">Submit</button>
+                      </form>
+                  </div>
+<br>
+                  <div class="form-section">
+                      <h3>Branch-wise Average Fine Information</h3>
+                      <form action="library_functions.php" method="get">
+                          <div class="form-group">
+                              <label for="startDate">Start Date:</label>
+                              <input type="date" id="startDate" name="startDate" class="form-control" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="endDate">End Date:</label>
+                              <input type="date" id="endDate" name="endDate" class="form-control" required>
+                          </div>
+                          <button type="submit" name="function" value="printBranchFineInformation" class="btn btn-primary">Submit</button>
+                      </form>
+                  </div>
+
+                  <!-- Pagination -->
+              </div>
+          </div>
+
         </div>
     </div>
 

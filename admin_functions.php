@@ -14,7 +14,6 @@ if ($conn->connect_error) {
 }
 
 // Function to add a document copy
-// Function to add a document copy
 function addDocumentCopy() {
     global $conn;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -134,7 +133,30 @@ function DeleteDocumentCopy($CopyId) {
         echo "Error deleting document copy: " . $conn->error;
     }
 }
+function addbookcopy() {
+    global $conn;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $Title = $_POST["Title"];
+        $PublisherId = $_POST["PublisherId"];
+        $PublicationDate = $_POST["PublicationDate"];
+        $Type = $_POST["Type"];
+        $ISBN = $_POST["ISBN"];
 
+
+        $sql = "INSERT INTO Document (Title, PublisherId, PublicationDate, Type, ISBN) VALUES ('$Title', '$PublisherId', '$PublicationDate', '$Type', '$ISBN')";
+        if ($conn->query($sql) === TRUE) {
+            // Display success message and branch information in a fancy way
+            echo '<div style="background-color: #dff0d8; border: 1px solid #d0e9c6; color: #3c763d; padding: 15px; margin-bottom: 20px; border-radius: 4px;">';
+            echo '<p>Document added successfully.</p>';
+            echo '</div>';
+
+            // Query to retrieve branch information
+
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+}
 
 // Function to add a new reader
 function addNewReader() {
@@ -189,6 +211,10 @@ if (isset($_GET['function'])) {
     $function = $_GET['function'];
 
     switch ($function) {
+        case 'addbookcopy':
+            addDocumentCopy();
+            break;
+
         case 'addDocumentCopy':
             addDocumentCopy();
             break;
