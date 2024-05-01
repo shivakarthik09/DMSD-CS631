@@ -7,7 +7,10 @@ if (!isset($_SESSION["admin_username"])) {
     exit;
 }
 
-include 'Dbconnection.php';
+$conn = new mysqli('localhost:3306', 'root', '', 'LibraryManagement');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 // Check if the form is submitted and $_POST values are set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
     // Retrieve Reader ID from the form
@@ -16,12 +19,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
     // Check if delete button is clicked
     if(isset($_POST['delete'])) {
         // Delete the reader based on the provided Reader ID
-        $delete_sql = "DELETE FROM `Reader` WHERE `RId` = '$RId'";
+        $delete_sql = "DELETE FROM Reader WHERE RId = '$RId'";
         if ($conn->query($delete_sql) === TRUE) {
             echo "<script>alert('Reader deleted successfully')</script>";
         } else {
             echo "<script>alert('Error deleting reader: " . $conn->error . "')</script>";
         }
+    }
+}
+// Function to fetch reader's information
+function getReaderInfo($conn, $RId) {
+    $reader_info_sql = "SELECT * FROM Reader WHERE RId = '$RId'";
+    $result = $conn->query($reader_info_sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row;
+    } else {
+        return false;
     }
 }
 ?>
@@ -153,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
               <li><a href="Document_copy.php">Documents</a></li>
               <li><a href="book.php">Books</a></li>
               <li><a href="student_dash.php">Readers</a></li>
-              <li><a href="#">Transactions</a></li>
+              
               <li><a href="logout.php" class="logout-btn">Logout</a></li>
           </ul>
       </div>
@@ -163,54 +177,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['RId'])) {
           <div class="col-md-9">
     <div class="content">
         <h2>Edit/Delete Reader</h2>
-        <!-- Vertical form for inserting and deleting a document copy -->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="RId">Reader Id:</label>
-                <input type="text" class="form-control" id="RId" name="RId">
-            </div>
-            <div class="form-group">
-                <label for="Name">Name:</label>
-                <input type="text" class="form-control" id="Name" name="Name">
-            </div>
-            <div class="form-group">
-                <label for="Address">Address:</label>
-                <input type="text" class="form-control" id="Address" name="Address">
-            </div>
-            <div class="form-group">
-                <label for="PhoneNumber">PhoneNumber:</label>
-                <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber">
-            </div>
-            <div class="form-group">
-                <label for="Type">Type:</label>
-                <select class="form-control" id="Type" name="Type">
-                    <option value="Staff">Staff</option>
-                    <option value="Student">Student</option>
-                    <option value="Public">Public</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Edit Copy</button>
-        </form>
-        <br>
+        <!-- Vertical form for inserting and deleting a reader -->
+        <form action="editreader.php" method="post">
+                        <div class="form-group">
+                            <label for="RId">Reader Id:</label>
+                            <input type="text" class="form-control" id="RId" name="RId">
+                        </div>
+                        <?php
+                        if (isset($_POST['edit'])) {
+                            $RId = $_POST['RId'];
+                            $reader_info = getReaderInfo($conn, $RId);
+                            if ($reader_info) {
+                                echo '<div class="form-group">';
+                                echo '<label for="Name">Name:</label>';
+                                echo '<input type="text" class="form-control" id="Name" name="Name" value="' . $reader_info['Name'] . '">';
+                                echo '</div>';
+                                echo '<div class="form-group">';
+                                echo '<label for="Address">Address:</label>';
+                                echo '<input type="text" class="form-control" id="Address" name="Address" value="' . $reader_info['Address'] . '">';
+                                echo '</div>';
+                                echo '<div class="form-group">';
+                                echo '<label for="PhoneNumber">PhoneNumber:</label>';
+                                echo '<input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="' . $reader_info['PhoneNumber'] . '">';
+                                echo '</div>';
+                                echo '<div class="form-group">';
+                                echo '<label for="Type">Type:</label>';
+                                echo '<select class="form-control" id="Type" name="Type">';
+                                echo '<option value="Staff" ' . ($reader_info['Type'] == 'Staff' ? 'selected' : '') . '>Staff</option>';
+                                echo '<option value="Student" ' . ($reader_info['Type'] == 'Student' ? 'selected' : '') . '>Student</option>';
+                                echo '<option value="Public" ' . ($reader_info['Type'] == 'Public' ? 'selected' : '') . '>Public</option>';
+                                echo '<option value="Other" ' . ($reader_info['Type'] == 'Other' ? 'selected' : '') . '>Other</option>';
+                                echo '</select>';
+                                echo '</div>';
+                                echo '<button type="submit" class="btn btn-primary" name="edit">Edit Reader</button>';
+                            } else {
+                                echo '<p>Reader not found!</p>';
+                            }
+                        } else {
+                            echo '<button type="submit" class="btn btn-primary" name="edit">Edit Reader</button>';
+                        }
+                        ?>
+                    </form>
+                    <br>
 
-        <!-- Form for deleting a reader -->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="RId">ReaderID to delete:</label>
-                <input type="text" class="form-control" id="RId" name="RId">
-            </div>
-            <button type="submit" class="btn btn-danger">Delete Reader</button>
-        </form>
-        <a href="student_dash.php" class="btn btn-secondary mt-3">Back</a>
-    </div>
-</div>
-
-
-
+                    <!-- Form for deleting a reader -->
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <div class="form-group">
+                            <label for="RId">ReaderID to delete:</label>
+                            <input type="text" class="form-control" id="RId" name="RId">
+                        </div>
+                        <button type="submit" class="btn btn-danger" name="delete">Delete Reader</button>
+                    </form>
+                    <a href="student_dash.php" class="btn btn-secondary mt-3">Back</a>
+                </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

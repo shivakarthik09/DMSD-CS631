@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'Dbconnection.php';
 
 // Check if admin is logged in, otherwise redirect to login page
 if (!isset($_SESSION["admin_username"])) {
