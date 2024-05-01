@@ -8,12 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    // Include database connection code here
-    $conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
+  include 'Dbconnection.php';
     // Prepare and execute SQL statement to fetch user from database
     $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ?");
     $stmt->bind_param("s", $username);

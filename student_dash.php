@@ -6,13 +6,7 @@ if (!isset($_SESSION["admin_username"])) {
     header("Location: admin_login.php");
     exit;
 }
-
-// Database connection
-$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include 'Dbconnection.php';
 // Pagination variables
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $records_per_page = 5;

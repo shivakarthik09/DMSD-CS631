@@ -7,11 +7,7 @@ if (!isset($_SESSION["admin_username"])) {
     exit;
 }
 
-// Database connection
-$conn = new mysqli('localhost:3307', 'root', '', 'LibraryManagement');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'Dbconnection.php';
 // Function to print the top N most frequent borrowers in branch I and the number of books each has borrowed
 function topNBorrowersInBranch($N, $branchId) {
     global $conn;
