@@ -171,11 +171,12 @@ $result = $conn->query($sql);
             </div>
             <div class="col-md-9">
                 <div class="content">
-                <h2>Readers</h2>
+                <h2>Readers Information</h2>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>RId</th>
                             <th>Name</th>
                             <th>Address</th>
                             <th>Phone Number</th>
@@ -188,6 +189,7 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
+                                echo "<td>" . $row["RId"] . "</td>";
                                 echo "<td>" . $row["Name"] . "</td>";
                                 echo "<td>" . $row["Address"] . "</td>";
                                 echo "<td>" . $row["PhoneNumber"] . "</td>";

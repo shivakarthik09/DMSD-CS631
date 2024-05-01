@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
     // $RId = $_POST['RId'];
     $Name = $_POST['Name'];
     $Address = $_POST['Address'];
-    $PhoneNumber = $_POST['PhoneNumber'];
+    $PhoneNumber = $_POST['PhoneNumber'];   
     $Type= $_POST['Type'];
 
     // database insert SQL code
@@ -29,9 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
     // insert in database 
     $rs = mysqli_query($conn, $sql);
 
-    if($rs) {
-        echo "New Reader Information Inserted";
-    }
+    
 } 
 
 
@@ -178,22 +176,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Name'], $_POST['Addres
         
         <div class="form-group">
             <label for="Name">Name:</label>
-            <input type="text" class="form-control" id="Name" name="Name">
+            <input type="text" class="form-control" id="Name" name="Name" required>
         </div>
         <div class="form-group">
             <label for="Address">Address:</label>
-            <input type="text" class="form-control" id="Address" name="Address">
+            <input type="text" class="form-control" id="Address" name="Address" required>
         </div>
         <div class="form-group">
             <label for="PhoneNumber">Phone Number:</label>
-            <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber">
+            <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" required>
         </div>
         <div class="form-group">
-            <label for="Type">Type:</label>
-            <input type="text" class="form-control" id="Type" name="Type">
+            <label for="Type">Type of Reader:</label>
+            
+           
+
+            <select name="Type" id="TypeSelect" class="form-control" required >
+            <option value="Select">Select</option>
+            <option value="Staff">Staff</option>
+            <option value="Student">Student</option>
+            <option value="Public">Public</option>
+            <option value="Other">Other</option>
+        </select>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+    
+    
+        <button onclick="myFunction()"  class="btn btn-secondary mt-3">Submit</button>
+        
+
     </form>
+    <script>
+function myFunction() {
+  alert("New Reader Added Successfully");
+}
+</script>
     <?php
     // Display validation errors, if any
     if (!empty($errors)) {
