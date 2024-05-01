@@ -102,12 +102,12 @@ if (!isset($_SESSION["admin_username"])) {
                 <li><a href="home.php">Home</a></li>
                 <li><a href="book.php">Books</a></li>
                 <li><a href="student_dash.php">Readers</a></li>
-                <li><a href="#">Transactions</a></li>
+                
                 <li><a href="logout.php" class="logout-btn">Logout</a></li>
             </ul>
         </div>
 
-        
+
             <div class="col-md-9">
                 <div class="content">
                     <h2>Add Book</h2>

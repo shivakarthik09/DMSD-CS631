@@ -104,7 +104,7 @@ if (!isset($_SESSION["admin_username"])) {
                 <li><a href="Management Insights.php">Management Insights</a></li>
                 <li><a href="book.php">Books</a></li>
                 <li><a href="student_dash.php">Readers</a></li>
-                <li><a href="#">Transactions</a></li>
+                
                 <li><a href="logout.php" class="logout-btn">Logout</a></li>
             </ul>
         </div>
